@@ -37,4 +37,4 @@ class Auth:
         return keyring.get_password("system", "none")
 
     def isLogged(self):
-        return keyring.get_password("system", "none") is None
+        return keyring.get_password("system", "none") is not None
