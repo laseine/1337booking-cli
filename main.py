@@ -1,6 +1,6 @@
 #!bin/python3
-import click
-from src import Auth
+import click, datetime
+from src import Auth, Api
 
 # TODO: login + logout + status
 
@@ -12,6 +12,12 @@ auth = Auth.Auth("http://localhost")
 def main(ctx):
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
+    else:
+        command = ctx.invoked_subcommand
+        allowed = ['login', 'logout', 'status']
+        if not auth.isLogged() and command not in allowed:
+            click.echo(click.style("You need to login first.", fg="red"))
+            exit(1)
 
 
 @main.command(help='Login to your admin account')
@@ -46,6 +52,12 @@ def status():
         click.echo("You are logged in.")
         return
     click.echo("You are not logged in.")
+
+
+@main.command(help="Ban user from booking/taking meals for the given period of time")
+@click.option('--user', '-u', help='Username to ban')
+def ban(user):
+    click.echo("Banning "+user)
 
 
 if __name__ == '__main__':
