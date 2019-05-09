@@ -30,7 +30,7 @@ def login():
 
 @main.command(help='Logout from your account')
 def logout():
-    if keyring.get_password("system", "none") is None:
+    if not auth.isLogged():
         click.echo(click.style("You are not logged in.", fg="red"))
         return
     res = auth.logout()
@@ -42,10 +42,10 @@ def logout():
 
 @main.command(help='Print your current status')
 def status():
-    if keyring.get_password("system", "none") is None:
-        click.echo("You are not logged in.")
+    if auth.isLogged():
+        click.echo("You are logged in.")
         return
-    click.echo("You are logged in.")
+    click.echo("You are not logged in.")
 
 
 if __name__ == '__main__':
