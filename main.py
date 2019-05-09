@@ -1,3 +1,4 @@
+#!bin/python3
 import click, keyring
 from src import Auth
 
