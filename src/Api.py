@@ -8,9 +8,9 @@ class Api:
         self.token = token
 
     def ban(self, login: str, start: datetime, end: datetime):
-        startDate = str('{0:%Y-%m-%d}'.format(start))
-        endDate = str('{0:%Y-%m-%d}'.format(end))
-        payload = {'login': login, 'start': startDate, 'end': endDate}
+        startdate = str('{0:%Y-%m-%d}'.format(start))
+        enddate = str('{0:%Y-%m-%d}'.format(end))
+        payload = {'login': login, 'start': startdate, 'end': enddate}
         try:
             r = requests.post(self.api_base + "/admin/ban", data=payload, headers={'Authorization': self.token})
         except requests.exceptions.RequestException as e:
