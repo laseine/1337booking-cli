@@ -1,5 +1,5 @@
 #!bin/python3
-import click, keyring
+import click
 from src import Auth
 
 # TODO: login + logout + status
@@ -16,7 +16,7 @@ def main(ctx):
 
 @main.command(help='Login to your admin account')
 def login():
-    if keyring.get_password("system", "none") is not None:
+    if auth.isLogged():
         click.echo(click.style("You are already logged in.", fg="red"))
         return
     usr = click.prompt('Username', type=str)
