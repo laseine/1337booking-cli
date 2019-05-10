@@ -1,7 +1,8 @@
 #!bin/python3
-import click, datetime
+import click, datetime, sys
 from src import Auth, Api
 from datetime import datetime
+
 
 # TODO: login + logout + status
 
@@ -58,26 +59,39 @@ def status():
 
 @main.command(help="Ban user from booking/taking meals for the given period of time")
 @click.option('--user', '-u', help='Username to ban')
-@click.option('--start', '-s', help='Start date (YYYY-MM-DD)')
-@click.option('--end', '-e', help='End date (YYYY-MM-DD)')
+@click.option('--start', '-s', help='Start date (YYYY-MM-DD)', required=True)
+@click.option('--end', '-e', help='End date (YYYY-MM-DD)', required=True)
+@click.option('--stdin', help='Get users from stdin', is_flag=True)
+@click.option('--format', help='Format for stdin, default is username per line.', type=click.Choice(['line']),
+              default='line')
 @click.pass_context
-def ban(ctx, user, start, end):
-    if None in [user, start, end]:
-        click.echo(click.style("Bad usage.", fg="red"))
-        click.echo(ctx.get_help())
-        return
+def ban(ctx, user, start, end, stdin, format):
     # Validate date format (same format as the `who` command)
     try:
-        startDate = datetime.strptime(start.strip(), '%Y-%m-%d')
-        endDate = datetime.strptime(end.strip(), '%Y-%m-%d')
+        startdate = datetime.strptime(start.strip(), '%Y-%m-%d')
+        enddate = datetime.strptime(end.strip(), '%Y-%m-%d')
     except ValueError:
         click.echo(click.style("Invalid date format", fg="red"))
         return
-    res = api.ban(user, startDate, endDate)
+    if not stdin and user is None:
+        click.echo(ctx.get_help())
+        click.echo(click.style('Error: missing option "--user" / "-u".', fg="red"))
+        return
+    if stdin:
+        for login in sys.stdin:
+            login = login.strip()
+            res = api.ban(login, startdate, enddate)
+            if res['error'] is not None:
+                click.echo(click.style(res['error'], fg="red"))
+            else:
+                click.echo(click.style("Banned " + login + " from " + start + " to " + end, fg="green"))
+        return
+
+    res = api.ban(user, startdate, enddate)
     if res['error'] is not None:
         click.echo(click.style(res['error'], fg="red"))
         return
-    click.echo(click.style("Benned "+user+" from "+start+" to "+end, fg="green"))
+    click.echo(click.style("Banned "+user+" from "+start+" to "+end, fg="green"))
 
 
 if __name__ == '__main__':
