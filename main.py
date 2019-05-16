@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import click, datetime, sys
 from src import Auth, Api
 from datetime import datetime
