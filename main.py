@@ -4,10 +4,8 @@ from src import Auth, Api
 from datetime import datetime
 
 
-# TODO: login + logout + status
-
-auth = Auth.Auth("http://localhost")
-api = Api.Api("http://localhost", auth.getToken())
+auth = Auth.Auth("http://booking.1337.ma:1337")
+api = Api.Api("http://booking.1337.ma:1337", auth.getToken())
 
 @click.group(invoke_without_command=True)
 @click.pass_context
