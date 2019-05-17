@@ -12,14 +12,6 @@ api = Api.Api("http://booking.1337.ma:1337", auth.getToken())
 def main(ctx):
     if ctx.invoked_subcommand is None:
         click.echo(ctx.get_help())
-    else:
-        command = ctx.invoked_subcommand
-        allowed = ['login', 'logout', 'status']
-        if not auth.isLogged() and command not in allowed:
-            click.echo(click.style("You need to login first.", fg="red"))
-            exit(1)
-
-
 
 @main.command(help='Login to your admin account')
 def login():
