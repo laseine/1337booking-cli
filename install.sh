@@ -29,5 +29,5 @@ if [[ $ans != "y" ]]; then
 	exit;
 fi
 
-sudo ln -s ./run.sh /usr/bin/booking-cli
+sudo ln -s ${PWD}/run.sh /usr/bin/booking-cli
 
