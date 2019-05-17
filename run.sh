@@ -7,4 +7,4 @@ fi
 cd "$(dirname "$path")"
 
 source bin/activate
-/usr/bin/env python3 main.py $@
+/usr/bin/env python3 booking-cli $@
