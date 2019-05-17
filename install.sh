@@ -2,11 +2,6 @@
 
 cd "$(dirname "$path")"
 
-if [[ $EUID == 0 ]]; then
-	echo "Do not run this as root."
-	exit;
-fi
-
 if ! [[ $(which python3) ]]; then
 	echo "Python3 must be installed.";
 	exit;
@@ -35,3 +30,4 @@ if [[ $ans != "y" ]]; then
 fi
 
 sudo ln -s ./run.sh /usr/bin/booking-cli
+
