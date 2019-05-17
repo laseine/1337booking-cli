@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd "$(dirname "$path")"
+
 if [[ $EUID == 0 ]]; then
 	echo "Do not run this as root."
 	exit;
@@ -24,3 +26,12 @@ pip3 install virtualenv
 virtualenv -p python3 .
 source bin/activate
 pip3 install -r requirements.txt
+
+echo -n "Do you want to install booking-cli globally (requires root)? [y/N]"
+read ans
+if [[ $ans != "y" ]]; then
+	echo "Installation finished."
+	exit;
+fi
+
+sudo ln -s ./run.sh /usr/bin/booking-cli
